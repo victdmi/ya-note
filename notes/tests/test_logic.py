@@ -1,10 +1,8 @@
 from http import HTTPStatus
 
 from django.contrib.auth import get_user_model
-from django.test import TestCase, Client
+from django.test import Client, TestCase
 from django.urls import reverse
-
-from notes.models import Note
 
 from notes.forms import WARNING
 from notes.models import Note
@@ -115,3 +113,11 @@ class TestNoteEditDelete(TestCase):
         self.note.refresh_from_db()
         self.assertEqual(self.note.text, self.NEW_NOTE_TEXT)
 
+    def test_user_cant_edit_note_of_another_user(self):
+        response = self.another_user_client.post(
+            self.edit_url,
+            data=self.form_data
+        )
+        self.assertEqual(response.status_code, HTTPStatus.NOT_FOUND)
+        self.note.refresh_from_db()
+        self.assertEqual(self.note.text, self.NOTE_TEXT)
