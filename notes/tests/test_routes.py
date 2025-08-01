@@ -10,9 +10,11 @@ User = get_user_model()
 
 
 class TestRoutes(TestCase):
+    """Класс для тестирования маршрутов."""
 
     @classmethod
     def setUpTestData(cls):
+        """Метод, подготавливающий данные для тестирования."""
         cls.author = User.objects.create(username='Автор заметки')
         cls.another_user = User.objects.create(username='Другой пользователь')
         cls.note = Note.objects.create(
@@ -22,6 +24,7 @@ class TestRoutes(TestCase):
         )
 
     def test_pages_availability(self):
+        """Тест доступности страниц для неавторизованного пользователя."""
         urls = (
             'notes:home',
             'users:login',
@@ -35,6 +38,7 @@ class TestRoutes(TestCase):
                 self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_availability_for_edit_detail_delete(self):
+        """Тест страниц создания, редактирования, удаления заметки."""
         users_and_statuses = (
             (self.author, HTTPStatus.OK),
             (self.another_user, HTTPStatus.NOT_FOUND)
@@ -53,6 +57,7 @@ class TestRoutes(TestCase):
                     self.assertEqual(response.status_code, status)
 
     def test_redirect_for_anonymous_client(self):
+        """Тест редиректов для неавторизованных пользователей."""
         login_url = reverse('users:login')
         urls = (
             ('notes:add', None),

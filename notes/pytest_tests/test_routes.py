@@ -1,19 +1,9 @@
-import pytest
-
-
 from http import HTTPStatus
 
-from pytest_lazy_fixtures import lf
-from pytest_django.asserts import assertRedirects
-
-
+import pytest
 from django.urls import reverse
-
-
-def test_home_availability_for_anonymous_user(client):
-    url = reverse('notes:home')
-    response = client.get(url)
-    assert response.status_code == HTTPStatus.OK
+from pytest_django.asserts import assertRedirects
+from pytest_lazy_fixtures import lf
 
 
 @pytest.mark.parametrize(
@@ -21,6 +11,7 @@ def test_home_availability_for_anonymous_user(client):
     ('notes:home', 'users:login', 'users:logout', 'users:signup')
 )
 def test_pages_availability_for_anonymous_user(not_author_client, name):
+    """Тест доступности страниц для неавторизованного пользователя."""
     url = reverse(name)
     response = not_author_client.get(url)
     assert response.status_code == HTTPStatus.OK
@@ -40,9 +31,11 @@ def test_pages_availability_for_anonymous_user(not_author_client, name):
 def test_pages_availability_for_different_users(
     parametrized_client, expected_status, name, note
 ):
+    """Тест доступности страниц для разных пользователей."""
     url = reverse(name, args=(note.slug,))
     response = parametrized_client.get(url)
     assert response.status_code == expected_status
+
 
 @pytest.mark.parametrize(
     'name, args',
@@ -56,6 +49,7 @@ def test_pages_availability_for_different_users(
     )
 )
 def test_redirects(client, name, args):
+    """Тест редиректов для неавторизованных пользователей."""
     login_url = reverse('users:login')
     url = reverse(name, args=args)
     expected_url = f'{login_url}?next={url}'
