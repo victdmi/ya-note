@@ -10,10 +10,10 @@ from pytest_lazy_fixtures import lf
     'name',
     ('notes:home', 'users:login', 'users:logout', 'users:signup')
 )
-def test_pages_availability_for_anonymous_user(not_author_client, name):
+def test_pages_availability_for_anonymous_user(client, name):
     """Тест доступности страниц для неавторизованного пользователя."""
     url = reverse(name)
-    response = not_author_client.get(url)
+    response = client.get(url)
     assert response.status_code == HTTPStatus.OK
 
 
