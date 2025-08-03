@@ -1,6 +1,7 @@
 import pytest
-from django.urls import reverse
 from pytest_lazy_fixtures import lf
+
+from django.urls import reverse
 
 from notes.forms import NoteForm
 

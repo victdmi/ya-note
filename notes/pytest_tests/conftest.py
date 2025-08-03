@@ -1,5 +1,7 @@
 import pytest
+
 from django.test.client import Client
+
 from notes.models import Note
 
 
@@ -47,3 +49,13 @@ def note(author):
 def slug_for_args(note):
     """Фикстура для возврата поля slug."""
     return (note.slug,)
+
+
+@pytest.fixture
+def form_data():
+    """Фикстура для возврата словаря."""
+    return {
+        'title': 'Новый заголовок',
+        'text': 'Новый текст',
+        'slug': 'new-slug'
+    }
