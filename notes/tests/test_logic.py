@@ -111,7 +111,7 @@ class TestNoteEditDelete(TestCase):
         cls.form_data = {
             'title': cls.NOTE_TITLE,
             'text': cls.NEW_NOTE_TEXT
-            }
+        }
 
     def test_author_can_delete_note(self):
         """Тест возможности автора удалять заметки."""
