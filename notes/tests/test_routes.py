@@ -35,7 +35,10 @@ class TestRoutes(TestCase):
         for name in urls:
             with self.subTest(name=name):
                 url = reverse(name)
-                response = self.client.get(url)
+                if name == 'users:logout':
+                    response = self.client.post(url)
+                else:
+                    response = self.client.get(url)
                 self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_availability_for_edit_detail_delete(self):
